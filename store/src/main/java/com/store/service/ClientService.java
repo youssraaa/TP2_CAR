@@ -37,4 +37,12 @@ public class ClientService {
     public String logout() {
         return "Successfully logged out";
     }
+    
+    public Client getClientByEmail(String email) {
+        return clientRepository.findById(email)
+            .orElseThrow(() -> new RuntimeException("Client not found"));
+    }
+
+    
+    
 }

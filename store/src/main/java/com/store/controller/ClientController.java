@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
 @Controller
 @RequestMapping("/store")
 public class ClientController {
@@ -39,13 +38,12 @@ public class ClientController {
         }
     }
 
-
     @PostMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, 
                         HttpSession session, Model model) {
         try {
             Client client = clientService.login(email, password);
-            session.setAttribute("currentUser", client);
+            session.setAttribute("clientEmail", client.getEmail()); 
             return "redirect:/store/welcome"; 
         } catch (RuntimeException e) {
             model.addAttribute("error", e.getMessage());
@@ -55,10 +53,11 @@ public class ClientController {
 
     @GetMapping("/welcome")
     public String welcome(HttpSession session, Model model) {
-        Client currentUser = (Client) session.getAttribute("currentUser");
-        if (currentUser == null) {
+        String clientEmail = (String) session.getAttribute("clientEmail"); 
+        if (clientEmail == null) {
             return "redirect:/store/home"; 
         }
+        Client currentUser = clientService.getClientByEmail(clientEmail);
         model.addAttribute("name", currentUser.getFirstName());
         return "welcome";
     }
