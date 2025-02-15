@@ -1,5 +1,6 @@
 package com.store.controller;
 
+import com.store.entity.Article;
 import com.store.entity.Client;
 import com.store.entity.Commande;
 import com.store.service.ClientService;
@@ -80,5 +81,42 @@ public class ClientController {
             clientService.addCommande(clientEmail, title);
         }
         return "redirect:/store/welcome";
+    }
+
+    @GetMapping("/commande/{commandeId}/articles")
+    public String viewCommandeArticles(@PathVariable Long commandeId, HttpSession session, Model model) {
+        String clientEmail = (String) session.getAttribute("clientEmail");
+        if (clientEmail == null) {
+            return "redirect:/store/home";
+        }
+
+        Client currentUser = clientService.getClientByEmail(clientEmail);       
+        Commande commande = clientService.getCommandeById(commandeId);
+        if (commande == null) {
+            return "redirect:/store/welcome"; 
+        }
+
+        List<Article> articles = clientService.getArticlesByCommandeId(commandeId);
+        
+        model.addAttribute("name", currentUser.getFirstName()); 
+        model.addAttribute("commande", commande); 
+        model.addAttribute("articles", articles); 
+
+        return "orderdetails"; 
+    }
+
+    @PostMapping("/commande/{commandeId}/addArticle")
+    public String addArticle(@PathVariable Long commandeId, 
+                             @RequestParam String libelle,
+                             @RequestParam int quantity,
+                             @RequestParam double unitPrice, 
+                             HttpSession session) {
+        String clientEmail = (String) session.getAttribute("clientEmail");
+        if (clientEmail == null) {
+            return "redirect:/store/home";
+        }
+
+        clientService.addArticleToCommande(commandeId, libelle, quantity, unitPrice);
+        return "redirect:/store/commande/" + commandeId + "/articles";
     }
 }

@@ -1,7 +1,11 @@
 package com.store.entity;
 
+import java.util.Collection;
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Client {
@@ -13,7 +17,6 @@ public class Client {
     private String firstName;
     private String lastName;
 
- 
     public Client() {
     }
 
@@ -55,4 +58,5 @@ public class Client {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
 }

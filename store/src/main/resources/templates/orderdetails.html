@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+</head>
+<body>
+
+    <h1>Welcome, <span th:text="${name}"></span>!</h1>
+
+    <a href="/store/welcome">Back to all orders</a>
+
+    <h2>Order : <span th:text="${commande != null ? commande.title : 'Commande introuvable'}"></span></h2>
+
+    <h3>Articles :</h3>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Label</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="article : ${articles}">
+                <td th:text="${article.libelle}"></td>
+                <td th:text="${article.quantity}"></td>
+                <td th:text="${article.unitPrice}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <hr>
+
+    <h3>Add an article :</h3>
+    <form th:action="@{/store/commande/{commandeId}/addArticle(commandeId=${commande.id})}" method="post">
+        <label for="libelle">Label :</label>
+        <input type="text" id="libelle" name="libelle" required><br>
+
+        <label for="quantity">Quantity :</label>
+        <input type="number" id="quantity" name="quantity" min="1" required><br>
+
+        <label for="unitPrice">Unit Price :</label>
+        <input type="number" id="unitPrice" name="unitPrice" step="0.01" required><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

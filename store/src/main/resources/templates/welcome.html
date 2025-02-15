@@ -7,22 +7,25 @@
 </head>
 <body>
     <h1>Welcome, <span th:text="${name}"></span>!</h1>
+    
+    <a href="/store/logout">Logout</a>
 
-    <!-- Commandes du client -->
-    <h2>Your Orders</h2>
+    <h2>Your Orders :</h2>
     <ul>
-        <li th:each="commande : ${commandes}" th:text="${commande.title}"></li>
+        <li th:each="commande : ${commandes}">
+           <a th:href="@{/store/commande/{commandeId}/articles(commandeId=${commande.id})}" th:text="${commande.title}"></a>
+        </li>
     </ul>
+    
+    <br>
+    <hr> 
 
-    <!-- Ajouter une commande -->
-    <h3>Add a new order</h3>
+    <h3>Add a new order :</h3>
     <form action="/store/addCommande" method="post">
-        <label for="title">Order Title:</label>
+        <label for="title">Order Title :</label>
         <input type="text" id="title" name="title" required>
         <button type="submit">Submit</button>
     </form>
 
-    <br>
-    <a href="/store/logout">Logout</a>
 </body>
 </html>
