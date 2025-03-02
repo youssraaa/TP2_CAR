@@ -4,6 +4,8 @@ import com.store.entity.Article;
 import com.store.entity.Client;
 import com.store.entity.Commande;
 import com.store.service.ClientService;
+import com.store.service.CommandeService;
+import com.store.service.ArticleService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,12 @@ public class ClientController {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private CommandeService commandeService;
+
+    @Autowired
+    private ArticleService articleService;
 
     @GetMapping("/home")
     public String home() {
@@ -59,10 +67,11 @@ public class ClientController {
         if (clientEmail == null) {
             return "redirect:/store/home"; 
         }
+
         Client currentUser = clientService.getClientByEmail(clientEmail);
         model.addAttribute("name", currentUser.getFirstName());
 
-        List<Commande> commandes = clientService.getCommandesByClientEmail(clientEmail);
+        List<Commande> commandes = commandeService.getCommandesByClientEmail(clientEmail);
         model.addAttribute("commandes", commandes);
 
         return "welcome"; 
@@ -75,10 +84,10 @@ public class ClientController {
     }
 
     @PostMapping("/addCommande")
-    public String addCommande(@RequestParam String title, HttpSession session, Model model) {
+    public String addCommande(@RequestParam String title, HttpSession session) {
         String clientEmail = (String) session.getAttribute("clientEmail");
         if (clientEmail != null) {
-            clientService.addCommande(clientEmail, title);
+            commandeService.addCommande(clientEmail, title);
         }
         return "redirect:/store/welcome";
     }
@@ -91,12 +100,12 @@ public class ClientController {
         }
 
         Client currentUser = clientService.getClientByEmail(clientEmail);       
-        Commande commande = clientService.getCommandeById(commandeId);
+        Commande commande = commandeService.getCommandeById(commandeId);
         if (commande == null) {
             return "redirect:/store/welcome"; 
         }
 
-        List<Article> articles = clientService.getArticlesByCommandeId(commandeId);
+        List<Article> articles = articleService.getArticlesByCommandeId(commandeId);
         
         model.addAttribute("name", currentUser.getFirstName()); 
         model.addAttribute("commande", commande); 
@@ -116,7 +125,7 @@ public class ClientController {
             return "redirect:/store/home";
         }
 
-        clientService.addArticleToCommande(commandeId, libelle, quantity, unitPrice);
+        articleService.addArticleToCommande(commandeId, libelle, quantity, unitPrice);
         return "redirect:/store/commande/" + commandeId + "/articles";
     }
 }
