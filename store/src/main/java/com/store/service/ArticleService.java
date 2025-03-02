@@ -29,4 +29,8 @@ public class ArticleService {
     public List<Article> getArticlesByCommandeId(Long commandeId) {
         return articleRepository.findByCommandeId(commandeId);
     }
+    
+    public void deleteArticle(Long articleId) {
+        articleRepository.deleteById(articleId);
+    }
 }

@@ -21,6 +21,7 @@
                 <th>Label</th>
                 <th>Quantity</th>
                 <th>Unit Price</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +29,7 @@
                 <td th:text="${article.libelle}"></td>
                 <td th:text="${article.quantity}"></td>
                 <td th:text="${article.unitPrice}"></td>
+                <td> <a th:href="@{/store/commande/{commandeId}/articles/{articleId}/delete(commandeId=${commande.id}, articleId=${article.id})}">Delete</a></td>
             </tr>
         </tbody>
     </table>

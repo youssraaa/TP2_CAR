@@ -128,4 +128,10 @@ public class ClientController {
         articleService.addArticleToCommande(commandeId, libelle, quantity, unitPrice);
         return "redirect:/store/commande/" + commandeId + "/articles";
     }
+    
+    @GetMapping("/commande/{commandeId}/articles/{articleId}/delete")
+    public String deleteArticle(@PathVariable Long commandeId, @PathVariable Long articleId) {
+        articleService.deleteArticle(articleId); 
+        return "redirect:/store/commande/{commandeId}/articles"; 
+    }
 }
