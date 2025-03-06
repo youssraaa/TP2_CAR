@@ -101,7 +101,7 @@ public class ClientController {
 
         Client currentUser = clientService.getClientByEmail(clientEmail);       
         Commande commande = commandeService.getCommandeById(commandeId);
-        if (commande == null) {
+        if (commande == null || !commande.getClientEmail().equals(currentUser.getEmail())){
             return "redirect:/store/welcome"; 
         }
 
@@ -136,10 +136,12 @@ public class ClientController {
     }
     
     @GetMapping("/commande/{commandeId}/imprimer")
-    public String printCommande(@PathVariable Long commandeId, Model model) {
+    public String printCommande(@PathVariable Long commandeId, Model model, HttpSession session) {
+    	
+    	 String clientEmail = (String) session.getAttribute("clientEmail");
 
         Commande commande = commandeService.getCommandeById(commandeId);
-        if (commande == null) {
+        if (commande == null || clientEmail == null || !commande.getClientEmail().equals(clientEmail)) {
             return "redirect:/store/welcome"; 
         }
 
