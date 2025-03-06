@@ -12,6 +12,8 @@
     <a href="/store/welcome">Back to all orders</a>
 
     <h2>Order : <span th:text="${commande != null ? commande.title : 'Commande introuvable'}"></span></h2>
+    
+    <a href="/store/commande/{commandeId}/imprimer" th:href="@{/store/commande/{commandeId}/imprimer(commandeId=${commande.id})}">Imprimer</a>
 
     <h3>Articles :</h3>
 

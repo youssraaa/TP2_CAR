@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 2px solid black;
+        }
+        h1, h3 {
+            text-transform: uppercase;
+            border-bottom: 2px solid black;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        .info {
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Order: <span th:text="${commande.title}"></span></h1>
+        <div class="info">
+            <p>Client: <span th:text="${client.firstName}"></span> <span th:text="${client.lastName}"></span></p>
+        </div>
+        <h3>Articles</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Label</th>
+                    <th>Quantity</th>
+                    <th>Unit Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="article : ${articles}">
+                    <td th:text="${article.libelle}"></td>
+                    <td th:text="${article.quantity}"></td>
+                    <td th:text="${article.unitPrice}"></td>
+                    <td th:text="${article.quantity * article.unitPrice}"></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="total">Total Order: <span th:text="${totalCommande}"></span> €</p>
+    </div>
+
+</body>
+</html>

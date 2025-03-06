@@ -134,4 +134,29 @@ public class ClientController {
         articleService.deleteArticle(articleId); 
         return "redirect:/store/commande/{commandeId}/articles"; 
     }
+    
+    @GetMapping("/commande/{commandeId}/imprimer")
+    public String printCommande(@PathVariable Long commandeId, Model model) {
+
+        Commande commande = commandeService.getCommandeById(commandeId);
+        if (commande == null) {
+            return "redirect:/store/welcome"; 
+        }
+
+        List<Article> articles = articleService.getArticlesByCommandeId(commandeId);
+
+        Client client = clientService.getClientByEmail(commande.getClientEmail());
+
+        double totalCommande = articles.stream()
+            .mapToDouble(article -> article.getQuantity() * article.getUnitPrice())
+            .sum();
+
+        model.addAttribute("commande", commande);
+        model.addAttribute("articles", articles);
+        model.addAttribute("client", client);
+        model.addAttribute("totalCommande", totalCommande);
+
+        return "print"; 
+    }
+
 }
