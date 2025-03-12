@@ -26,10 +26,5 @@ public class CommandeService {
     public Commande getCommandeById(Long commandeId) {
         return commandeRepository.findById(commandeId).orElse(null);
     }
-    
-    public boolean isCommandeOwner(Long commandeId, String clientEmail) {
-        Commande commande = getCommandeById(commandeId);
-        return commande != null && commande.getClientEmail().equals(clientEmail);
-    }
 
 }
